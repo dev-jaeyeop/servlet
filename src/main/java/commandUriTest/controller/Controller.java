@@ -18,16 +18,16 @@ public class Controller extends HttpServlet {
     public void init() {
         commandHandlerHashMap = new HashMap<>();
         String propertiesPath = "properties.commandUriTest";
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath); // 프로퍼티 파일 읽어옴
-        Enumeration<String> resourceBundleKeys = resourceBundle.getKeys(); // 키를 Enumeration 타입으로 가져옴 ex) /select.do
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath); // properties 파일을 읽어옴
+        Enumeration<String> resourceBundleKeys = resourceBundle.getKeys(); // key 를 가져옴 ex) /select.do
 
-        while (resourceBundleKeys.hasMoreElements()) { // 키가 존재하면
+        while (resourceBundleKeys.hasMoreElements()) { // key 가 존재하면
             try {
-                String uri = resourceBundleKeys.nextElement(); // 키를 가져옴
-                String controllerPath = resourceBundle.getString(uri); // 키에 해당하는 값을 가져옴
-                Class controllerClass = Class.forName(controllerPath); // 키에 해당하는 값
-                Handler commandHandler = (Handler) controllerClass.newInstance();
-                commandHandlerHashMap.put(uri, commandHandler); // uri: "/select.do", commandHandler: "commandUriTest.controller.Select"
+                String uri = resourceBundleKeys.nextElement(); // key 를 가져옴
+                String controllerPath = resourceBundle.getString(uri); // resourceBundle 에서 key 에 해당하는 value 를 가져옴
+                Class controllerClass = Class.forName(controllerPath); // key 에 해당하는 value 의 이름을 가진 class 초기화
+                Handler commandHandler = (Handler) controllerClass.newInstance(); // class 생성
+                commandHandlerHashMap.put(uri, commandHandler); // String(uri): "/select.do", Handler(commandHandler): "commandUriTest.controller.Select"
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -43,17 +43,22 @@ public class Controller extends HttpServlet {
     }
 
     public void commandCheck(HttpServletRequest request, HttpServletResponse response) {
-        Handler commandHandler = commandHandlerHashMap.get(request.getRequestURI()); // commandHandler: "commandUriTest.controller.Select"
+        Handler commandHandler = commandHandlerHashMap.get(request.getRequestURI()); // commandHandler: "commandUriTest.controller.Select" -> 존재하지 않으면 null;
 
-        if (commandHandler == null) {
-            commandHandler = new Select();
+        if (commandHandler == null) { // 찿고자하는 uri 가 없을 때
+            commandHandler = new Select(); // viewPage: "WEB-INF/view/commandUriTest/select.jsp"
         }
 
         try {
-            String viewPage = commandHandler.process(request, response); // return: "WEB-INF/view/commandUriTest/select.jsp"
-            request.getRequestDispatcher(viewPage).forward(request, response); // request, response ????????????????????????
+            String viewPage = commandHandler.process(request, response); // viewPage: "WEB-INF/view/commandUriTest/select.jsp"
+            request.getRequestDispatcher(viewPage).forward(request, response); // request, response 로 들어온 정보를 공유하기 위해 forward
+//            response.sendRedirect(viewPage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // forward: 새로운 페이지에서 request, response 객체를 공유 (요청 정보 전달)
+        // sendRedirect: 새로운 페이지에서 request, response 객체가 새로 생성
+
     }
 }
