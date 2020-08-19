@@ -50,7 +50,7 @@
                 phone
             </td>
             <td>
-                <input type="text" name="phone" required="true">
+                <input type="text" name="phone" required="true" >
             </td>
         </tr>
         <tr>

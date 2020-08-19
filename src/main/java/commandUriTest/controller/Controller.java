@@ -17,15 +17,15 @@ public class Controller extends HttpServlet {
     @Override
     public void init() {
         commandHandlerHashMap = new HashMap<>();
-        String propertiesPath = "properties.user";
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath);
-        Enumeration<String> resourceBundleKeys = resourceBundle.getKeys();
+        String propertiesPath = "properties.commandUriTest";
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath); // 프로퍼티 파일 읽어옴
+        Enumeration<String> resourceBundleKeys = resourceBundle.getKeys(); // 키를 Enumeration 타입으로 가져옴 ex) /select.do
 
-        while (resourceBundleKeys.hasMoreElements()) {
+        while (resourceBundleKeys.hasMoreElements()) { // 키가 존재하면
             try {
-                String uri = resourceBundleKeys.nextElement(); // /select.do
-                String controllerPath = resourceBundle.getString(uri); // Select.java
-                Class controllerClass = Class.forName(controllerPath);
+                String uri = resourceBundleKeys.nextElement(); // 키를 가져옴
+                String controllerPath = resourceBundle.getString(uri); // 키에 해당하는 값을 가져옴
+                Class controllerClass = Class.forName(controllerPath); // 키에 해당하는 값
                 Handler commandHandler = (Handler) controllerClass.newInstance();
                 commandHandlerHashMap.put(uri, commandHandler); // uri: "/select.do", commandHandler: "commandUriTest.controller.Select"
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
