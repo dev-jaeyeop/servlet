@@ -23,10 +23,11 @@ public class Controller extends HttpServlet {
 
         while (resourceBundleKeys.hasMoreElements()) { // key 가 존재하면
             try {
-                String uri = resourceBundleKeys.nextElement(); // key 를 가져옴
+                String uri = resourceBundleKeys.nextElement(); // key 를 가져옴 ex) /select.do
                 String controllerPath = resourceBundle.getString(uri); // resourceBundle 에서 key 에 해당하는 value 를 가져옴
-                Class controllerClass = Class.forName(controllerPath); // key 에 해당하는 value 의 이름을 가진 class 초기화
-                Handler commandHandler = (Handler) controllerClass.newInstance(); // class 생성
+//                Class controllerClass = Class.forName(controllerPath); // key 에 해당하는 value 의 이름을 가진 class 선언 -> newInstance()시 기본 생성자 호출 (new) -> class 초기화
+//                Handler commandHandler = (Handler) controllerClass.newInstance(); // commandHandler = new controllerPath();
+                Handler commandHandler = (Handler) Class.forName(controllerPath).newInstance();
                 commandHandlerHashMap.put(uri, commandHandler); // String(uri): "/select.do", Handler(commandHandler): "commandUriTest.controller.Select"
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -57,8 +58,7 @@ public class Controller extends HttpServlet {
             e.printStackTrace();
         }
 
-        // forward: 새로운 페이지에서 request, response 객체를 공유 (요청 정보 전달)
-        // sendRedirect: 새로운 페이지에서 request, response 객체가 새로 생성
-
+//         forward: 새로운 페이지에서 request, response 객체를 공유 (요청 정보 전달)
+//         sendRedirect: 새로운 페이지에서 request, response 객체가 새로 생성
     }
 }
