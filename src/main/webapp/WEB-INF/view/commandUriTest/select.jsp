@@ -15,6 +15,7 @@
     table, td {
         border: 1px solid black;
         border-collapse: collapse;
+        text-align: center;
     }
 </style>
 <body>
@@ -22,11 +23,10 @@
     <%
         ArrayList<User> users = (ArrayList<User>) request.getAttribute("users");
 
-        if (users == null || users.size() < 1) {
+        if (users == null && users.size() < 1) {
     %>
     <script>
         alert("not found");
-        // location.href = 'insert.jsp';
     </script>
     <%
     } else {
@@ -54,7 +54,7 @@
         }
     %>
     <tr>
-        <td colspan="2" style="text-align: center">
+        <td colspan="2">
             <input type="button" value="insert" onclick="location.href='/insert.do'">
         </td>
     </tr>

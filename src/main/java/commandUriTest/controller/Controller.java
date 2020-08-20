@@ -45,20 +45,25 @@ public class Controller extends HttpServlet {
 
     public void commandCheck(HttpServletRequest request, HttpServletResponse response) {
         Handler commandHandler = commandHandlerHashMap.get(request.getRequestURI()); // commandHandler: "commandUriTest.controller.Select" -> 존재하지 않으면 null;
+        String viewPage;
 
         if (commandHandler == null) { // 찿고자하는 uri 가 없을 때
             commandHandler = new Select(); // viewPage: "WEB-INF/view/commandUriTest/select.jsp"
         }
 
         try {
-            String viewPage = commandHandler.process(request, response); // viewPage: "WEB-INF/view/commandUriTest/select.jsp"
-            request.getRequestDispatcher(viewPage).forward(request, response); // request, response 로 들어온 정보를 공유하기 위해 forward
-//            response.sendRedirect(viewPage);
+            if (request.getRequestURI().equals("/insertProcess.do")) {
+                commandHandler.process(request, response);
+                response.sendRedirect("/select.do");
+            } else {
+                viewPage = commandHandler.process(request, response); // viewPage: "WEB-INF/view/commandUriTest/select.jsp"
+                request.getRequestDispatcher(viewPage).forward(request, response); // request, response 로 들어온 정보를 공유하기 위해 forward
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-//         forward: 새로운 페이지에서 request, response 객체를 공유 (요청 정보 전달)
-//         sendRedirect: 새로운 페이지에서 request, response 객체가 새로 생성
+//         request.getRequestDispatcher(viewPage).forward(request, response): 새로운 페이지에서 request, response 객체를 공유 (요청 정보 전달)
+//         response.sendRedirect(viewPage): 새로운 페이지에서 request, response 객체를 새로 생성
     }
 }

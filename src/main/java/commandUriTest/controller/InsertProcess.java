@@ -17,7 +17,7 @@ public class InsertProcess implements Handler {
         user.setPhone(request.getParameter("phone"));
         new UserDAO().insert(user);
 
-        request.setAttribute("users", new UserDAO().select());
-        return "WEB-INF/view/commandUriTest/select.jsp";
+//        return "WEB-INF/view/commandUriTest/select.jsp";
+        return "";
     }
 }

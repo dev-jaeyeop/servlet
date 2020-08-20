@@ -9,9 +9,16 @@
 <html>
 <head>
     <title>insert</title>
+    <style>
+        table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<form action="insertProcess.do" method="post">
+<form action="/insertProcess.do" method="post">
     <table>
         <tr>
             <td>
@@ -50,7 +57,7 @@
                 phone
             </td>
             <td>
-                <input type="text" name="phone" required="true" >
+                <input type="text" name="phone" required="true">
             </td>
         </tr>
         <tr>
