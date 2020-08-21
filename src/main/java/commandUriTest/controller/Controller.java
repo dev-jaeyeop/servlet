@@ -18,7 +18,7 @@ public class Controller extends HttpServlet {
     public void init() {
         commandHandlerHashMap = new HashMap<>();
         String propertiesPath = "properties.commandUriTest";
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath); // properties 파일을 읽어옴
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(propertiesPath); // properties 파일을 읽어옴 key 와 value 형태 ex) /select.do : commandUriTest.controller.Select
         Enumeration<String> resourceBundleKeys = resourceBundle.getKeys(); // key 를 가져옴 ex) /select.do
 
         while (resourceBundleKeys.hasMoreElements()) { // key 가 존재하면
